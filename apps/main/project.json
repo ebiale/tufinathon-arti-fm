@@ -2,7 +2,7 @@
   "name": "main",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "taf",
   "sourceRoot": "apps/main/src",
   "tags": [],
   "targets": {
