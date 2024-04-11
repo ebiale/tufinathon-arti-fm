@@ -15,7 +15,7 @@ export class ContentComponent {
   theme = 'vs-dark';
 
   model: CodeModel = {
-    language: 'postiats',
+    language: 'typescript',
     uri: 'main.json',
     value: '{}'
   };

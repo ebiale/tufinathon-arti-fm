@@ -1,22 +1,27 @@
 import { Component } from '@angular/core';
 import { ContentComponent } from './components/content/content.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CodeEditorComponent } from './components/code-editor/code-editor.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   standalone: true,
   imports: [
-    ContentComponent
+    ContentComponent,
+    CodeEditorComponent,
+    ReactiveFormsModule,
+    JsonPipe
   ],
   selector: 'taf-root',
   template: `
-    <taf-content/>
-  `,
-  styles: `
-    :host {
-      color: blue;
-    }
+    <taf-code-editor [formControl]="codeCtrl"/>
 
+
+    {{codeCtrl.value | json}}
+    {{codeCtrl.touched}}
   `,
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'main';
+  codeCtrl = new FormControl<string>('{}');
 }
