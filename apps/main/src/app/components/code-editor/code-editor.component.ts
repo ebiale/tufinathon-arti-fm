@@ -17,14 +17,14 @@ import { MatInput } from '@angular/material/input';
     <form>
       <mat-form-field>
         <mat-label>Language</mat-label>
-        <input #input
+        <input #inputLanguage
                type="text"
                placeholder="Pick language"
                matInput
                [formControl]="languageCtrl"
                [matAutocomplete]="auto"
-               (input)="filter()"
-               (focus)="filter()">
+               (input)="filterLanguages()"
+               (focus)="filterLanguages()">
         <mat-autocomplete requireSelection #auto="matAutocomplete">
           @for (language of filteredLanguages; track language) {
             <mat-option [value]="language">{{ language }}</mat-option>
@@ -79,9 +79,8 @@ export class CodeEditorComponent implements ControlValueAccessor {
     }
   };
 
-  @ViewChild('input') input: ElementRef<HTMLInputElement>;
+  @ViewChild('inputLanguage') inputLanguage: ElementRef<HTMLInputElement>;
   languageCtrl = new FormControl('typescript');
-
   languages = [
     'plaintext',
     'abap',
@@ -168,16 +167,16 @@ export class CodeEditorComponent implements ControlValueAccessor {
     'yaml',
     'json'
   ];
-
-
   filteredLanguages: string[];
+
+
 
   constructor() {
     this.filteredLanguages = [...this.languages];
   }
 
-  filter(): void {
-    const filterValue = this.input.nativeElement.value.toLowerCase();
+  filterLanguages(): void {
+    const filterValue = this.inputLanguage.nativeElement.value.toLowerCase();
     this.filteredLanguages = this.languages.filter(o => o.toLowerCase().includes(filterValue));
   }
 
