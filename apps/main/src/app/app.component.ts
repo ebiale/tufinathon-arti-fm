@@ -15,13 +15,9 @@ import { JsonPipe } from '@angular/common';
   selector: 'taf-root',
   template: `
     <taf-code-editor [formControl]="codeCtrl"/>
-
-
-    {{codeCtrl.value | json}}
-    {{codeCtrl.touched}}
   `,
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  codeCtrl = new FormControl<string>('{}');
+  codeCtrl = new FormControl<string>('');
 }

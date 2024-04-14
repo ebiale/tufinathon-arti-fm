@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, ViewChild }
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorModule, CodeModel } from '@ngstack/code-editor';
-import { MatFormField } from '@angular/material/form-field';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { MatInput } from '@angular/material/input';
 
@@ -12,27 +12,26 @@ import { MatInput } from '@angular/material/input';
   imports: [CommonModule,
     CodeEditorModule, MatFormField,
     ReactiveFormsModule, MatAutocompleteTrigger,
-    MatAutocomplete, MatOption, MatInput],
+    MatAutocomplete, MatOption, MatInput, MatLabel],
   template: `
-
-<form>
-    <mat-form-field>
-      <mat-label>Number</mat-label>
-      <input #input
-             type="text"
-             placeholder="Pick one"
-             matInput
-             [formControl]="myControl"
-             [matAutocomplete]="auto"
-             (input)="filter()"
-             (focus)="filter()">
-      <mat-autocomplete requireSelection #auto="matAutocomplete">
-        @for (language of filteredLanguages; track language) {
-          <mat-option [value]="language">{{ language }}</mat-option>
-        }
-      </mat-autocomplete>
-    </mat-form-field>
-</form>
+    <form>
+      <mat-form-field>
+        <mat-label>Language</mat-label>
+        <input #input
+               type="text"
+               placeholder="Pick language"
+               matInput
+               [formControl]="languageCtrl"
+               [matAutocomplete]="auto"
+               (input)="filter()"
+               (focus)="filter()">
+        <mat-autocomplete requireSelection #auto="matAutocomplete">
+          @for (language of filteredLanguages; track language) {
+            <mat-option [value]="language">{{ language }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
 
     <ngs-code-editor [theme]="theme" [codeModel]="model"
                      (valueChanged)="onCodeChanged($event)"></ngs-code-editor>
@@ -81,7 +80,7 @@ export class CodeEditorComponent implements ControlValueAccessor {
   };
 
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
-  myControl = new FormControl('');
+  languageCtrl = new FormControl('typescript');
 
   languages = [
     'plaintext',
