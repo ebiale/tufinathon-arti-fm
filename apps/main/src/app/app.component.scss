@@ -26,13 +26,13 @@
 .title {
   grid-area: title;
   color: var(--tufin-color);
-  font-weight: 600;
-  font-size: 25px;
+  font: 800 25px Poppins;
 }
 
 .content {
   border: 3px solid var(--border-color);
   border-radius: var(--content-border-radius);
+  max-height: calc(100vh - 120px);
 }
 
 .sub-title {
