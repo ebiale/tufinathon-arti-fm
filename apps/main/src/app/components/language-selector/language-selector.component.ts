@@ -12,7 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ReactiveFormsModule, MatAutocompleteTrigger,
     MatAutocomplete, MatOption, MatInput, MatLabel],
   template: `
-      <mat-form-field>
+      <mat-form-field style="width: 100%;">
         <mat-label>Pick Language</mat-label>
         <input #inputLanguage
                type="text"

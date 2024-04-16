@@ -1,8 +1,7 @@
-import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, effect, ElementRef, signal, ViewChild} from '@angular/core';
 import {TextBoxComponent} from './text-box/text-box.component';
 import {MyMessageComponent} from './message/my-message/my-message.component';
 import {ChatMessageComponent} from './message/chat-message/chat-message.component';
-import {indentBy} from '@angular-devkit/core/src/utils/literals';
 
 @Component({
   selector: 'taf-response-content',
@@ -18,10 +17,22 @@ import {indentBy} from '@angular-devkit/core/src/utils/literals';
   ],
 })
 export class ResponseContentComponent {
+  @ViewChild('container') containerRef: ElementRef;
+
+  constructor() {
+    effect(() => {
+      if (this.messages()) {
+        this.focusLastItem();
+      }
+
+    });
+  }
+
   messages = signal<{msg: string, isGPT: boolean }[]>([
     {isGPT: true, msg: 'First message test'},{ isGPT: false, msg: 'Second message test'}
   ]);
   isLoading = signal(false);
+
 
 
   handleMessage(prompt: string) {
@@ -33,10 +44,16 @@ export class ResponseContentComponent {
     //todo get response from the api
     const resp = {message: 'test'}
         this.updateMessages(resp.message, true);
+
    //   } else {
     //    this.updateMessages(resp.message, true);
  //     }
  //   });
+  }
+
+  focusLastItem() {
+    const container = this.containerRef.nativeElement;
+    container.scrollTop = container.scrollHeight;
   }
 
   private updateMessages(msg: string, isGPT: boolean) {
@@ -47,7 +64,6 @@ export class ResponseContentComponent {
         msg,
       }
     ])
-  }
 
-  protected readonly indentBy = indentBy;
+  }
 }
