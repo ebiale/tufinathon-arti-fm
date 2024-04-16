@@ -32,12 +32,17 @@ import { MatInput } from '@angular/material/input';
       height: 100%;
     }
 
-    .ngs-code-editor::ng-deep .overflow-guard {
-      border-radius: var(--content-border-radius);
-    }
+    .ngs-code-editor::ng-deep {
+      .overflow-guard {
+        border-radius: var(--content-border-radius);
+      }
 
-    .ngs-code-editor::ng-deep .monaco-editor {
-      border-radius: var(--content-border-radius);
+      .monaco-editor {
+        border-radius: var(--content-border-radius);
+        --vscode-focusBorder: transparent;
+      }
+
+
     }
 
 

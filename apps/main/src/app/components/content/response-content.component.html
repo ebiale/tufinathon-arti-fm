@@ -1,6 +1,6 @@
 <div class="chat-container">
-  <div class="chat-messages">
-    <div class="chat-content">
+  <div class="chat-messages"  #container>
+    <div class="chat-content" >
 
       @for (message of messages(); track $index) {
         @if (message.isGPT) {
@@ -9,9 +9,11 @@
           <taf-my-message [text]="message.msg"/>
         }
       }
+
     </div>
   </div>
 
   <taf-text-box placeholder="Message Arti.fm"
                         (sendMessage)="handleMessage($event)"/>
+
 </div>

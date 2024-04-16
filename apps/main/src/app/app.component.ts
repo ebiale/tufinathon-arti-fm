@@ -20,9 +20,12 @@ import { ArtiControlsService } from './services/arti-controls.service';
     <div class="top">
       <span class="title">Hey There Tufiner!</span>
       <span class="sub-title">Drop sample code here and let's do some magic:</span>
-      <taf-language-selector class="language-selector" [formControl]="languageCtrl" />
     </div>
-    <taf-code-editor class="content code-editor" [formControl]="codeCtrl" [language]="languageCtrl.value" />
+    <div class="content code-editor-wrapper">
+      <taf-language-selector class="language-selector" [formControl]="languageCtrl" />
+      <taf-code-editor  [formControl]="codeCtrl" [language]="languageCtrl.value" />
+    </div>
+
     <taf-response-content class="content response-content"/>
 
   `,
