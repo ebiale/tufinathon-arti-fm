@@ -5,6 +5,7 @@ import { CodeEditorModule, CodeModel } from '@ngstack/code-editor';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { MatInput } from '@angular/material/input';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'taf-code-editor',
@@ -80,7 +81,7 @@ export class CodeEditorComponent implements ControlValueAccessor {
   };
 
   @ViewChild('inputLanguage') inputLanguage: ElementRef<HTMLInputElement>;
-  languageCtrl = new FormControl('typescript');
+  languageCtrl = new FormControl('typescript', {nonNullable: true});
   languages = [
     'plaintext',
     'abap',
@@ -173,6 +174,11 @@ export class CodeEditorComponent implements ControlValueAccessor {
 
   constructor() {
     this.filteredLanguages = [...this.languages];
+    this.languageCtrl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(language => {
+      this.model = {...this.model, language}
+    })
   }
 
   filterLanguages(): void {
