@@ -15,11 +15,14 @@
     "@angular/platform-browser": "~17.3.0",
     "@angular/platform-browser-dynamic": "~17.3.0",
     "@angular/router": "~17.3.0",
+    "@ngrx/signals": "^17.2.0",
     "@ngstack/code-editor": "^7.2.0",
     "@nx/angular": "18.2.3",
+    "axios": "^1.6.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "~0.14.3",
+    "@ngrx/operators": "^17.2.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~17.3.0",
@@ -32,6 +35,8 @@
     "@angular/compiler-cli": "~17.3.0",
     "@angular/language-service": "~17.3.0",
     "@angular/material": "^17.3.3",
+    "@ngrx/operators": "^17.2.0",
+    "@ngrx/signals": "^17.2.0",
     "@nx/cypress": "18.2.3",
     "@nx/eslint": "18.2.3",
     "@nx/eslint-plugin": "18.2.3",

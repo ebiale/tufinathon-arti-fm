@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { ContentComponent } from './components/content/content.component';
+import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from './components/code-editor/code-editor.component';
 import { JsonPipe } from '@angular/common';
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
 import {ResponseContentComponent} from './components/content/response-content.component';
+import { ArtiControlsService } from './services/arti-controls.service';
 
 @Component({
   standalone: true,
   imports: [
-    ContentComponent,
     CodeEditorComponent,
     ReactiveFormsModule,
     JsonPipe,
@@ -30,6 +29,9 @@ import {ResponseContentComponent} from './components/content/response-content.co
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  languageCtrl = new FormControl<string>('typescript', {nonNullable: true});
-  codeCtrl = new FormControl<string>('');
+
+  private artiControlsService = inject(ArtiControlsService);
+
+  languageCtrl = this.artiControlsService.languageCtrl;
+  codeCtrl = this.artiControlsService.codeCtrl;
 }

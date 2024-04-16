@@ -70,6 +70,7 @@ export class CodeEditorComponent implements ControlValueAccessor {
 
   options = {
     contextmenu: true,
+    lineNumbers: true,
     minimap: {
       enabled: true
     }

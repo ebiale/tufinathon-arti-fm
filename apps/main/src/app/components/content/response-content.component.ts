@@ -1,8 +1,10 @@
-import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {TextBoxComponent} from './text-box/text-box.component';
 import {MyMessageComponent} from './message/my-message/my-message.component';
 import {ChatMessageComponent} from './message/chat-message/chat-message.component';
 import {indentBy} from '@angular-devkit/core/src/utils/literals';
+import { ArtiStore } from '../../services/arti.store';
+import { ArtiControlsService } from '../../services/arti-controls.service';
 
 @Component({
   selector: 'taf-response-content',
@@ -23,8 +25,11 @@ export class ResponseContentComponent {
   ]);
   isLoading = signal(false);
 
+  private artiStore = inject(ArtiStore);
+  private artiControlsService = inject(ArtiControlsService);
 
-  handleMessage(prompt: string) {
+
+  handleMessage(prompt: any) {
     this.isLoading.set(true);
     this.updateMessages(prompt, false);
   //  this.service.getResponse(prompt).subscribe(resp => {
@@ -37,6 +42,14 @@ export class ResponseContentComponent {
     //    this.updateMessages(resp.message, true);
  //     }
  //   });
+
+
+    this.artiStore.load({
+      code: this.artiControlsService.codeCtrl.value,
+      mode: 'summarize',
+      language: this.artiControlsService.languageCtrl.value,
+      userInput: prompt.prompt
+    })
   }
 
   private updateMessages(msg: string, isGPT: boolean) {
