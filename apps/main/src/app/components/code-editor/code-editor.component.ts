@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, effect, ElementRef, forwardRef, input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, forwardRef, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorModule, CodeModel } from '@ngstack/code-editor';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { MatInput } from '@angular/material/input';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'taf-code-editor',
@@ -15,24 +14,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ReactiveFormsModule, MatAutocompleteTrigger,
     MatAutocomplete, MatOption, MatInput, MatLabel],
   template: `
-<!--    <form>-->
-<!--      <mat-form-field>-->
-<!--        <mat-label>Language</mat-label>-->
-<!--        <input #inputLanguage-->
-<!--               type="text"-->
-<!--               placeholder="Pick language"-->
-<!--               matInput-->
-<!--               [formControl]="languageCtrl"-->
-<!--               [matAutocomplete]="auto"-->
-<!--               (input)="filterLanguages()"-->
-<!--               (focus)="filterLanguages()">-->
-<!--        <mat-autocomplete requireSelection #auto="matAutocomplete">-->
-<!--          @for (language of filteredLanguages; track language) {-->
-<!--            <mat-option [value]="language">{{ language }}</mat-option>-->
-<!--          }-->
-<!--        </mat-autocomplete>-->
-<!--      </mat-form-field>-->
-<!--    </form>-->
 
     <ngs-code-editor [theme]="theme" [codeModel]="model"
                      (valueChanged)="onCodeChanged($event)"></ngs-code-editor>
@@ -45,9 +26,20 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       height: 100%;
     }
 
+
+
     .ngs-code-editor {
       height: 100%;
     }
+
+    .ngs-code-editor::ng-deep .overflow-guard {
+      border-radius: var(--content-border-radius);
+    }
+
+    .ngs-code-editor::ng-deep .monaco-editor {
+      border-radius: var(--content-border-radius);
+    }
+
 
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -83,116 +75,15 @@ export class CodeEditorComponent implements ControlValueAccessor {
     }
   };
 
-  @ViewChild('inputLanguage') inputLanguage: ElementRef<HTMLInputElement>;
-  languageCtrl = new FormControl('typescript', {nonNullable: true});
-  languages = [
-    'plaintext',
-    'abap',
-    'apex',
-    'azcli',
-    'bat',
-    'bicep',
-    'cameligo',
-    'clojure',
-    'coffeescript',
-    'c',
-    'cpp',
-    'csharp',
-    'csp',
-    'css',
-    'cypher',
-    'dart',
-    'dockerfile',
-    'ecl',
-    'elixir',
-    'flow9',
-    'fsharp',
-    'freemarker2',
-    'go',
-    'graphql',
-    'handlebars',
-    'hcl',
-    'html',
-    'ini',
-    'java',
-    'javascript',
-    'julia',
-    'kotlin',
-    'less',
-    'lexon',
-    'lua',
-    'liquid',
-    'm3',
-    'markdown',
-    'mdx',
-    'mips',
-    'msdax',
-    'mysql',
-    'objective-c',
-    'pascal',
-    'pascaligo',
-    'perl',
-    'pgsql',
-    'php',
-    'pla',
-    'postiats',
-    'powerquery',
-    'powershell',
-    'proto',
-    'pug',
-    'python',
-    'qsharp',
-    'r',
-    'razor',
-    'redis',
-    'redshift',
-    'restructuredtext',
-    'ruby',
-    'rust',
-    'sb',
-    'scala',
-    'scheme',
-    'scss',
-    'shell',
-    'sol',
-    'aes',
-    'sparql',
-    'sql',
-    'st',
-    'swift',
-    'systemverilog',
-    'verilog',
-    'tcl',
-    'twig',
-    'typescript',
-    'vb',
-    'wgsl',
-    'xml',
-    'yaml',
-    'json'
-  ];
-  filteredLanguages: string[];
+
 
 
 
   constructor() {
-    // this.filteredLanguages = [...this.languages];
-    // this.languageCtrl.valueChanges.pipe(
-    //   takeUntilDestroyed()
-    // ).subscribe(language => {
-    //   this.model = {...this.model, language}
-    // })
-
     effect(() => {
       this.model = {...this.model, language: this.language()};
     });
   }
-
-  filterLanguages(): void {
-    const filterValue = this.inputLanguage.nativeElement.value.toLowerCase();
-    this.filteredLanguages = this.languages.filter(o => o.toLowerCase().includes(filterValue));
-  }
-
 
   writeValue(code: string): void {
     this.model = { ...this.model, value: code };

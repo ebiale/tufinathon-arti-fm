@@ -21,7 +21,8 @@ import { LanguageSelectorComponent } from './components/language-selector/langua
       <span class="sub-title">Drop sample code here and let's do some magic:</span>
       <taf-language-selector class="language-selector" [formControl]="languageCtrl" />
     </div>
-    <taf-code-editor [formControl]="codeCtrl" [language]="languageCtrl.value" />
+    <taf-code-editor class="content code-editor" [formControl]="codeCtrl" [language]="languageCtrl.value" />
+    <div class="content response-content"></div>
   `,
   styleUrl: './app.component.scss'
 })

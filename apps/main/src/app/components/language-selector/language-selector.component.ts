@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, viewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
@@ -12,7 +12,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ReactiveFormsModule, MatAutocompleteTrigger,
     MatAutocomplete, MatOption, MatInput, MatLabel],
   template: `
-
       <mat-form-field>
         <mat-label>Pick Language</mat-label>
         <input #inputLanguage
@@ -29,7 +28,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
           }
         </mat-autocomplete>
       </mat-form-field>
-
   `,
   styles: `
 
@@ -48,10 +46,8 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
   onChange: (code: string) => void;
   onTouch: () => void;
 
+  inputLanguage = viewChild.required<ElementRef<HTMLInputElement>>('inputLanguage');
 
-  // theme = 'vs-dark';
-
-  @ViewChild('inputLanguage') inputLanguage: ElementRef<HTMLInputElement>;
   languageCtrl = new FormControl('typescript', {nonNullable: true});
   languages = [
     'plaintext',
@@ -141,27 +137,22 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
   ];
   filteredLanguages: string[];
 
-
-
   constructor() {
     this.filteredLanguages = [...this.languages];
     this.languageCtrl.valueChanges.pipe(
       takeUntilDestroyed()
     ).subscribe(language => {
-      console.log('language', language);
       this.onChange(language);
       this.onTouch();
     })
   }
 
   filterLanguages(): void {
-    const filterValue = this.inputLanguage.nativeElement.value.toLowerCase();
+    const filterValue = this.inputLanguage().nativeElement.value.toLowerCase();
     this.filteredLanguages = this.languages.filter(o => o.toLowerCase().includes(filterValue));
   }
 
-
   writeValue(language: string): void {
-    // this.model = { ...this.model, value: code };
     this.languageCtrl.setValue(language, {emitEvent: false});
   }
 
@@ -173,9 +164,5 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
     this.onTouch = fn;
   }
 
-  // onCodeChanged(code: string) {
-  //   this.onChange(code);
-  //   this.onTouch();
-  // }
 }
 
