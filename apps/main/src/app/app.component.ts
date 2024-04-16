@@ -3,6 +3,7 @@ import { ContentComponent } from './components/content/content.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from './components/code-editor/code-editor.component';
 import { JsonPipe } from '@angular/common';
+import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
 
 @Component({
   standalone: true,
@@ -10,14 +11,21 @@ import { JsonPipe } from '@angular/common';
     ContentComponent,
     CodeEditorComponent,
     ReactiveFormsModule,
-    JsonPipe
+    JsonPipe,
+    LanguageSelectorComponent
   ],
   selector: 'taf-root',
   template: `
-    <taf-code-editor [formControl]="codeCtrl"/>
+    <div class="top">
+      <span class="title">Hey There Tufiner!</span>
+      <span class="sub-title">Drop sample code here and let's do some magic:</span>
+      <taf-language-selector class="language-selector" [formControl]="languageCtrl" />
+    </div>
+    <taf-code-editor [formControl]="codeCtrl" [language]="languageCtrl.value" />
   `,
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  languageCtrl = new FormControl<string>('typescript', {nonNullable: true});
   codeCtrl = new FormControl<string>('');
 }

@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  --back-color: #242424;
+  --tufin-color: #DE5F0A;
+  --text-color: #FFFFFF;
+}
+
 html, body {
   height: 100%;
 }
@@ -9,4 +15,5 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   display: flex;
   flex-direction: column;
+  background-color: var(--back-color);
 }

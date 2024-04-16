@@ -1,87 +1,55 @@
-import { ChangeDetectionStrategy, Component, effect, ElementRef, forwardRef, input, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { CodeEditorModule, CodeModel } from '@ngstack/code-editor';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { MatInput } from '@angular/material/input';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'taf-code-editor',
+  selector: 'taf-language-selector',
   standalone: true,
-  imports: [CommonModule,
-    CodeEditorModule, MatFormField,
+  imports: [MatFormField,
     ReactiveFormsModule, MatAutocompleteTrigger,
     MatAutocomplete, MatOption, MatInput, MatLabel],
   template: `
-<!--    <form>-->
-<!--      <mat-form-field>-->
-<!--        <mat-label>Language</mat-label>-->
-<!--        <input #inputLanguage-->
-<!--               type="text"-->
-<!--               placeholder="Pick language"-->
-<!--               matInput-->
-<!--               [formControl]="languageCtrl"-->
-<!--               [matAutocomplete]="auto"-->
-<!--               (input)="filterLanguages()"-->
-<!--               (focus)="filterLanguages()">-->
-<!--        <mat-autocomplete requireSelection #auto="matAutocomplete">-->
-<!--          @for (language of filteredLanguages; track language) {-->
-<!--            <mat-option [value]="language">{{ language }}</mat-option>-->
-<!--          }-->
-<!--        </mat-autocomplete>-->
-<!--      </mat-form-field>-->
-<!--    </form>-->
 
-    <ngs-code-editor [theme]="theme" [codeModel]="model"
-                     (valueChanged)="onCodeChanged($event)"></ngs-code-editor>
+      <mat-form-field>
+        <mat-label>Pick Language</mat-label>
+        <input #inputLanguage
+               type="text"
+               placeholder="Pick language"
+               matInput
+               [formControl]="languageCtrl"
+               [matAutocomplete]="auto"
+               (input)="filterLanguages()"
+               (focus)="filterLanguages()">
+        <mat-autocomplete requireSelection #auto="matAutocomplete">
+          @for (language of filteredLanguages; track language) {
+            <mat-option [value]="language">{{ language }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
 
   `,
   styles: `
-    :host {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .ngs-code-editor {
-      height: 100%;
-    }
 
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CodeEditorComponent),
+      useExisting: forwardRef(() => LanguageSelectorComponent),
       multi: true
     }
-  ]
+  ],
 })
-export class CodeEditorComponent implements ControlValueAccessor {
-
-
-  language = input.required<string>();
+export class LanguageSelectorComponent implements ControlValueAccessor {
 
   onChange: (code: string) => void;
   onTouch: () => void;
 
 
-  theme = 'vs-dark';
-
-  model: CodeModel = {
-    language: 'typescript',
-    uri: 'main.json',
-    value: '{}'
-  };
-
-  options = {
-    contextmenu: true,
-    minimap: {
-      enabled: true
-    }
-  };
+  // theme = 'vs-dark';
 
   @ViewChild('inputLanguage') inputLanguage: ElementRef<HTMLInputElement>;
   languageCtrl = new FormControl('typescript', {nonNullable: true});
@@ -176,16 +144,14 @@ export class CodeEditorComponent implements ControlValueAccessor {
 
 
   constructor() {
-    // this.filteredLanguages = [...this.languages];
-    // this.languageCtrl.valueChanges.pipe(
-    //   takeUntilDestroyed()
-    // ).subscribe(language => {
-    //   this.model = {...this.model, language}
-    // })
-
-    effect(() => {
-      this.model = {...this.model, language: this.language()};
-    });
+    this.filteredLanguages = [...this.languages];
+    this.languageCtrl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(language => {
+      console.log('language', language);
+      this.onChange(language);
+      this.onTouch();
+    })
   }
 
   filterLanguages(): void {
@@ -194,8 +160,9 @@ export class CodeEditorComponent implements ControlValueAccessor {
   }
 
 
-  writeValue(code: string): void {
-    this.model = { ...this.model, value: code };
+  writeValue(language: string): void {
+    // this.model = { ...this.model, value: code };
+    this.languageCtrl.setValue(language, {emitEvent: false});
   }
 
   registerOnChange(fn: (code: string) => void): void {
@@ -206,8 +173,9 @@ export class CodeEditorComponent implements ControlValueAccessor {
     this.onTouch = fn;
   }
 
-  onCodeChanged(code: string) {
-    this.onChange(code);
-    this.onTouch();
-  }
+  // onCodeChanged(code: string) {
+  //   this.onChange(code);
+  //   this.onTouch();
+  // }
 }
+

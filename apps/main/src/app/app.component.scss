@@ -1,11 +1,36 @@
 @use '@angular/material' as mat;
 
 :host {
-  @include mat.elevation(24);
-  padding: 20px;
   display: flex;
   flex-direction: column;
   height: 100%;
   margin: 20px;
-  border-radius: 10px;
 }
+
+.top {
+  display: grid;
+  grid-template-areas:
+        "title language-selector"
+        "sub-title language-selector";
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 100px;
+}
+
+.title {
+  grid-area: title;
+  color: var(--tufin-color);
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.sub-title {
+  grid-area: sub-title;
+  color: var(--text-color);
+}
+
+.language-selector {
+  grid-area: language-selector;
+}
+
+
+
