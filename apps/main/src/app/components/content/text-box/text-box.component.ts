@@ -1,18 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output} from '@angular/core';
-import {CommonModule, NgIf} from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { CommonModule, NgIf } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'taf-text-box',
@@ -44,7 +32,7 @@ export class TextBoxComponent implements OnInit {
 
   handleSubmit() {
     if(this.form?.invalid) return;
-    const prompt = this.form?.value;
+    const prompt = this.form?.value.prompt;
     this.sendMessage.emit(prompt);
     this.form?.reset();
   }

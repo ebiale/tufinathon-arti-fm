@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, effect, ElementRef, signal, ViewChild, inject} from '@angular/core';
-import {TextBoxComponent} from './text-box/text-box.component';
-import {MyMessageComponent} from './message/my-message/my-message.component';
-import {ChatMessageComponent} from './message/chat-message/chat-message.component';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { TextBoxComponent } from './text-box/text-box.component';
+import { MyMessageComponent } from './message/my-message/my-message.component';
+import { ChatMessageComponent } from './message/chat-message/chat-message.component';
 import { ArtiStore } from '../../services/arti.store';
 import { ArtiControlsService } from '../../services/arti-controls.service';
 
@@ -14,9 +14,8 @@ import { ArtiControlsService } from '../../services/arti-controls.service';
   imports: [
     TextBoxComponent,
     MyMessageComponent,
-    ChatMessageComponent
-
-  ],
+    ChatMessageComponent,
+  ]
 })
 export class ResponseContentComponent {
   @ViewChild('container') containerRef: ElementRef;
@@ -30,37 +29,19 @@ export class ResponseContentComponent {
     });
   }
 
-  messages = signal<{msg: string, isGPT: boolean }[]>([
-    {isGPT: true, msg: 'First message test'},{ isGPT: false, msg: 'Second message test'}
-  ]);
-  isLoading = signal(false);
-
   private artiStore = inject(ArtiStore);
   private artiControlsService = inject(ArtiControlsService);
+  messages = this.artiStore.messages;
 
 
-  handleMessage(prompt: any) {
-    this.isLoading.set(true);
-    this.updateMessages(prompt, false);
-  //  this.service.getResponse(prompt).subscribe(resp => {
-      this.isLoading.set(false);
-    //  if (resp.ok) {
-    //todo get response from the api
-    const resp = {message: 'test'}
-        this.updateMessages(resp.message, true);
-
-   //   } else {
-    //    this.updateMessages(resp.message, true);
- //     }
- //   });
-
+  handleMessage(prompt: string) {
 
     this.artiStore.load({
       code: this.artiControlsService.codeCtrl.value,
       mode: 'summarize',
       language: this.artiControlsService.languageCtrl.value,
-      userInput: prompt.prompt
-    })
+      userInput: prompt
+    });
   }
 
   focusLastItem() {
@@ -68,14 +49,4 @@ export class ResponseContentComponent {
     container.scrollTop = container.scrollHeight;
   }
 
-  private updateMessages(msg: string, isGPT: boolean) {
-    this.messages.update((prevMessages) => [
-      ...prevMessages,
-      {
-        isGPT,
-        msg,
-      }
-    ])
-
-  }
 }
