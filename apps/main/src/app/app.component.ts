@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from './components/code-editor/code-editor.component';
 import { JsonPipe } from '@angular/common';
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
+import {ResponseContentComponent} from './components/content/response-content.component';
 
 @Component({
   standalone: true,
@@ -12,7 +13,8 @@ import { LanguageSelectorComponent } from './components/language-selector/langua
     CodeEditorComponent,
     ReactiveFormsModule,
     JsonPipe,
-    LanguageSelectorComponent
+    LanguageSelectorComponent,
+    ResponseContentComponent
   ],
   selector: 'taf-root',
   template: `
@@ -22,7 +24,8 @@ import { LanguageSelectorComponent } from './components/language-selector/langua
       <taf-language-selector class="language-selector" [formControl]="languageCtrl" />
     </div>
     <taf-code-editor class="content code-editor" [formControl]="codeCtrl" [language]="languageCtrl.value" />
-    <div class="content response-content"></div>
+    <taf-response-content class="content response-content"/>
+
   `,
   styleUrl: './app.component.scss'
 })

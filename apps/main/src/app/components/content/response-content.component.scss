@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: black;
+  color: white;
+
+  .chat-content {
+    display: grid;
+    grid-gap: 0.5rem;
+  }
+
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .taf-text-box {
+    margin-top: auto;
+  }
+}
