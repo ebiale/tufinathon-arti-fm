@@ -19,7 +19,7 @@ import { ArtiControlsService } from './services/arti-controls.service';
   selector: 'taf-root',
   template: `
     <div class="top">
-      <img class="logo" ngSrc="./../assets/img.png" >
+      <img class="logo" ngSrc="./../assets/img.png" width="145" height="40" alt="">
       <span class="title">Hey There Tufiner!</span>
 
     </div>
@@ -34,7 +34,7 @@ import { ArtiControlsService } from './services/arti-controls.service';
 
     <div class="content code-editor-wrapper response-code">
       <div class="header">
-        <span class="sub-title">Drop sample code here and let's do some magic:</span>
+        <span class="sub-title"></span>
         <taf-language-selector class="language-selector" [formControl]="responseLanguageCtrl" labelText="Language"/>
       </div>
       <taf-code-editor [formControl]="responseCodeCtrl" [language]="responseLanguageCtrl.value"  uri="response.json"/>
