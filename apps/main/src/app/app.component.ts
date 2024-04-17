@@ -19,7 +19,7 @@ import { ArtiControlsService } from './services/arti-controls.service';
   selector: 'taf-root',
   template: `
     <div class="top">
-      <img class="logo" ngSrc="./../assets/img.png" width="145" height="40" alt="">
+      <img class="logo" ngSrc="./assets/img.png" width="145" height="40" alt="">
       <span class="title">Hey There Tufiner!</span>
 
     </div>
