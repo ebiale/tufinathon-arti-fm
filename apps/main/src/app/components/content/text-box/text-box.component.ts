@@ -22,6 +22,7 @@ export class TextBoxComponent implements OnInit {
   @Input() placeholder = '';
 
   private artiStore = inject(ArtiStore);
+  loading = this.artiStore.loading;
   private artiControlsService = inject(ArtiControlsService);
 
   fb: FormBuilder = inject(FormBuilder);
@@ -36,17 +37,20 @@ export class TextBoxComponent implements OnInit {
   }
 
   send(mode: ArtiRequest['mode']) {
-    let userInput = '';
-    if (mode === 'advanced') {
-      userInput = this.form?.value.prompt;
+    if (!this.loading()) {
+
+      let userInput = '';
+      if (mode === 'advanced') {
+        userInput = this.form?.value.prompt;
+      }
+      this.artiStore.load({
+        code: this.artiControlsService.requestCodeCtrl.value,
+        mode,
+        language: this.artiControlsService.requestLanguageCtrl.value,
+        userInput
+      });
+      this.form?.reset();
     }
-    this.artiStore.load({
-      code: this.artiControlsService.requestCodeCtrl.value,
-      mode,
-      language: this.artiControlsService.requestLanguageCtrl.value,
-      userInput
-    });
-    this.form?.reset();
   }
 }
 
