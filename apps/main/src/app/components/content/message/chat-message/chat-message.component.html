@@ -3,8 +3,8 @@
     <div class="icon-container">
       <span class="chat-icon">A</span> Arti.fm
     </div>
-    <div class="text-content">
-        {{ text }}
+    <div class="text-content" [class.error]="message.isError">
+        {{ message.msg }}
     </div>
   </div>
 </div>

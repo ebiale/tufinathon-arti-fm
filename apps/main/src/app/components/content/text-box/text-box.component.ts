@@ -36,7 +36,6 @@ export class TextBoxComponent implements OnInit {
   }
 
   send(mode: ArtiRequest['mode']) {
-    if(this.form?.invalid) return;
     let userInput = '';
     if (mode === 'advanced') {
       userInput = this.form?.value.prompt;

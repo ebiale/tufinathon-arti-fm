@@ -31,6 +31,7 @@ export class ResponseContentComponent {
   }
 
   private artiStore = inject(ArtiStore);
+  loading = this.artiStore.loading;
   messages = this.artiStore.messages;
 
 
