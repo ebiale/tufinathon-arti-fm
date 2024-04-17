@@ -38,6 +38,7 @@
   border: 3px solid var(--border-color);
   border-radius: var(--content-border-radius);
   max-height: calc(100vh - 120px);
+  box-sizing: border-box;
 }
 
 .code-editor-wrapper {

@@ -18,7 +18,7 @@ export class ArtiControlsService {
     effect(() => {
       if (this.artiResponse()) {
         this.responseLanguageCtrl.setValue(this.artiResponse()!.language);
-        this.responseCodeCtrl.setValue(this.artiResponse()!.result);
+        this.responseCodeCtrl.setValue(this.artiResponse()!.code);
       }
     }, { allowSignalWrites: true });
   }
