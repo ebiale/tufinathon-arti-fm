@@ -3,6 +3,7 @@ import { TextBoxComponent } from './text-box/text-box.component';
 import { MyMessageComponent } from './message/my-message/my-message.component';
 import { ChatMessageComponent } from './message/chat-message/chat-message.component';
 import { ArtiStore } from '../../services/arti.store';
+import {LoaderComponent} from '../loader/loader.component';
 
 @Component({
   selector: 'taf-response-content',
@@ -14,6 +15,7 @@ import { ArtiStore } from '../../services/arti.store';
     TextBoxComponent,
     MyMessageComponent,
     ChatMessageComponent,
+    LoaderComponent,
   ]
 })
 export class ResponseContentComponent {
