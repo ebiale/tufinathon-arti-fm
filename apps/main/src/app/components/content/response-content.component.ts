@@ -37,9 +37,9 @@ export class ResponseContentComponent {
   handleMessage(prompt: string) {
 
     this.artiStore.load({
-      code: this.artiControlsService.codeCtrl.value,
+      code: this.artiControlsService.requestCodeCtrl.value,
       mode: 'summarize',
-      language: this.artiControlsService.languageCtrl.value,
+      language: this.artiControlsService.requestLanguageCtrl.value,
       userInput: prompt
     });
   }

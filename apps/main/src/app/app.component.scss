@@ -5,12 +5,14 @@
   flex-direction: column;
   grid-template-areas:
         "top top"
-        "code-editor-wrapper response-content";
+        "request-code response-content"
+        "response-code response-content";
   height: 100%;
   margin: 20px;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr 1fr;
   grid-column-gap: 13px;
+  grid-row-gap: 13px;
 }
 
 .top {
@@ -41,7 +43,6 @@
 }
 
 .code-editor-wrapper {
-  grid-area: code-editor-wrapper;
   display: grid;
   grid-template-areas:
         "language-selector"
@@ -60,6 +61,14 @@
 
 .response-content {
   grid-area: response-content;
+}
+
+.request-code {
+  grid-area: request-code;
+}
+
+.response-code {
+  grid-area: response-code;
 }
 
 

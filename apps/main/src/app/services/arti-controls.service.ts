@@ -1,14 +1,25 @@
-import { Injectable } from '@angular/core';
+import { effect, inject, Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ArtiStore } from './arti.store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArtiControlsService {
-  languageCtrl = new FormControl<string>('java', {nonNullable: true});
-  codeCtrl = new FormControl<string>('', {nonNullable: true});
+  requestLanguageCtrl = new FormControl<string>('java', { nonNullable: true });
+  responseLanguageCtrl = new FormControl<string>({ value: 'java', disabled: true }, { nonNullable: true });
+  requestCodeCtrl = new FormControl<string>('', { nonNullable: true });
+  responseCodeCtrl = new FormControl<string>({ value: '', disabled: true }, { nonNullable: true });
+
+  private artiStore = inject(ArtiStore);
+  artiResponse = this.artiStore.artiResponse;
 
   constructor() {
-    this.codeCtrl.valueChanges.subscribe(value => console.log('code ', value));
+    effect(() => {
+      if (this.artiResponse()) {
+        this.responseLanguageCtrl.setValue(this.artiResponse()!.language);
+        this.responseCodeCtrl.setValue(this.artiResponse()!.result);
+      }
+    }, { allowSignalWrites: true });
   }
 }

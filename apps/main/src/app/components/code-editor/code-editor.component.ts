@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, effect, forwardRef, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  forwardRef,
+  inject,
+  input,
+  signal
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorModule, CodeModel } from '@ngstack/code-editor';
@@ -14,10 +23,10 @@ import { MatInput } from '@angular/material/input';
     ReactiveFormsModule, MatAutocompleteTrigger,
     MatAutocomplete, MatOption, MatInput, MatLabel],
   template: `
-
-    <ngs-code-editor [theme]="theme" [codeModel]="model"
-                     (valueChanged)="onCodeChanged($event)"></ngs-code-editor>
-
+    @if (model().uri) {
+      <ngs-code-editor [theme]="theme" [codeModel]="model()!" [readOnly]="readonly"
+                       (valueChanged)="onCodeChanged($event)" />
+    }
   `,
   styles: `
     :host {
@@ -43,7 +52,11 @@ import { MatInput } from '@angular/material/input';
 export class CodeEditorComponent implements ControlValueAccessor {
 
 
+  changeDetector = inject(ChangeDetectorRef);
+
   language = input.required<string>();
+  uri = input.required<string>();
+  readonly = false;
 
   onChange: (code: string) => void;
   onTouch: () => void;
@@ -51,11 +64,11 @@ export class CodeEditorComponent implements ControlValueAccessor {
 
   theme = 'vs-dark';
 
-  model: CodeModel = {
-    language: 'typescript',
-    uri: 'main.json',
-    value: '{}'
-  };
+  model = signal<CodeModel>({
+    value: '',
+    uri: '',
+    language: ''
+  });
 
   options = {
     contextmenu: true,
@@ -65,18 +78,15 @@ export class CodeEditorComponent implements ControlValueAccessor {
     }
   };
 
-
-
-
-
   constructor() {
     effect(() => {
-      this.model = {...this.model, language: this.language()};
-    });
+      // this.model = {...this.model, language: this.language(), uri: this.uri()};
+      this.model.update(model => ({ ...model, language: this.language(), uri: this.uri() }));
+    }, { allowSignalWrites: true });
   }
 
   writeValue(code: string): void {
-    this.model = { ...this.model, value: code };
+    this.model.update(model => ({ ...model, value: code }));
   }
 
   registerOnChange(fn: (code: string) => void): void {
@@ -85,6 +95,10 @@ export class CodeEditorComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: () => void): void {
     this.onTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean) {
+    this.readonly = isDisabled;
   }
 
   onCodeChanged(code: string) {

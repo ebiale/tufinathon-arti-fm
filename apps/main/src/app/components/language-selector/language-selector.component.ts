@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, input, viewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
@@ -12,22 +12,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ReactiveFormsModule, MatAutocompleteTrigger,
     MatAutocomplete, MatOption, MatInput, MatLabel],
   template: `
-      <mat-form-field style="width: 100%;">
-        <mat-label>Pick Language</mat-label>
-        <input #inputLanguage
-               type="text"
-               placeholder="Pick language"
-               matInput
-               [formControl]="languageCtrl"
-               [matAutocomplete]="auto"
-               (input)="filterLanguages()"
-               (focus)="filterLanguages()">
-        <mat-autocomplete requireSelection #auto="matAutocomplete">
-          @for (language of filteredLanguages; track language) {
-            <mat-option [value]="language">{{ language }}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>{{ labelText() }}</mat-label>
+      <input #inputLanguage
+             type="text"
+             placeholder="Pick language"
+             matInput
+             [formControl]="languageCtrl"
+             [matAutocomplete]="auto"
+             (input)="filterLanguages()"
+             (focus)="filterLanguages()">
+      <mat-autocomplete requireSelection #auto="matAutocomplete">
+        @for (language of filteredLanguages; track language) {
+          <mat-option [value]="language">{{ language }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
   `,
   styles: `
 
@@ -39,7 +39,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       useExisting: forwardRef(() => LanguageSelectorComponent),
       multi: true
     }
-  ],
+  ]
 })
 export class LanguageSelectorComponent implements ControlValueAccessor {
 
@@ -48,7 +48,7 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
 
   inputLanguage = viewChild.required<ElementRef<HTMLInputElement>>('inputLanguage');
 
-  languageCtrl = new FormControl('typescript', {nonNullable: true});
+  languageCtrl = new FormControl('typescript', { nonNullable: true });
   languages = [
     'plaintext',
     'abap',
@@ -137,6 +137,8 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
   ];
   filteredLanguages: string[];
 
+  labelText = input.required<string>();
+
   constructor() {
     this.filteredLanguages = [...this.languages];
     this.languageCtrl.valueChanges.pipe(
@@ -144,7 +146,7 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
     ).subscribe(language => {
       this.onChange(language);
       this.onTouch();
-    })
+    });
   }
 
   filterLanguages(): void {
@@ -153,7 +155,7 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
   }
 
   writeValue(language: string): void {
-    this.languageCtrl.setValue(language, {emitEvent: false});
+    this.languageCtrl.setValue(language, { emitEvent: false });
   }
 
   registerOnChange(fn: (code: string) => void): void {
@@ -162,6 +164,10 @@ export class LanguageSelectorComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: () => void): void {
     this.onTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean) {
+    isDisabled ? this.languageCtrl.disable({ emitEvent: false }) : this.languageCtrl.enable({ emitEvent: false });
   }
 
 }
