@@ -30,6 +30,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     </mat-form-field>
   `,
   styles: `
+    .mat-mdc-option {
+      --mat-option-selected-state-label-text-color: white;
+      --mat-minimal-pseudo-checkbox-selected-checkmark-color: white;
+    }
 
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
