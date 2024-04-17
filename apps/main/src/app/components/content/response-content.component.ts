@@ -3,7 +3,6 @@ import { TextBoxComponent } from './text-box/text-box.component';
 import { MyMessageComponent } from './message/my-message/my-message.component';
 import { ChatMessageComponent } from './message/chat-message/chat-message.component';
 import { ArtiStore } from '../../services/arti.store';
-import { ArtiControlsService } from '../../services/arti-controls.service';
 
 @Component({
   selector: 'taf-response-content',
@@ -30,19 +29,8 @@ export class ResponseContentComponent {
   }
 
   private artiStore = inject(ArtiStore);
-  private artiControlsService = inject(ArtiControlsService);
   messages = this.artiStore.messages;
 
-
-  handleMessage(prompt: string) {
-
-    this.artiStore.load({
-      code: this.artiControlsService.requestCodeCtrl.value,
-      mode: 'summarize',
-      language: this.artiControlsService.requestLanguageCtrl.value,
-      userInput: prompt
-    });
-  }
 
   focusLastItem() {
     const container = this.containerRef.nativeElement;

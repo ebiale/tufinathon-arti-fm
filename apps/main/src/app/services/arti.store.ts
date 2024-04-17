@@ -19,7 +19,14 @@ export const ArtiStore = signalStore(
   ),
   withMethods(store => ({
       async load(request: ArtiRequest) {
-        patchState(store, ({ messages }) => ({ messages: [...messages, { isGPT: false, msg: request.userInput }] }));
+        let newMessage = request.userInput;
+        if (request.mode === 'summarize') {
+          newMessage = ' What does the code do?'
+        }
+        if (request.mode === 'optimize') {
+          newMessage = ' How can I make it better?';
+        }
+        patchState(store, ({ messages }) => ({ messages: [...messages, { isGPT: false, msg: newMessage }] }));
         try {
           const response = await getArti(request);
           patchState(store, ({ messages }) => (

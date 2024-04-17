@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ArtiRequest } from '../../../models/arti-request.model';
+import { ArtiStore } from '../../../services/arti.store';
+import { ArtiControlsService } from '../../../services/arti-controls.service';
 
 @Component({
   selector: 'taf-text-box',
@@ -18,7 +20,9 @@ import { ArtiRequest } from '../../../models/arti-request.model';
 })
 export class TextBoxComponent implements OnInit {
   @Input() placeholder = '';
-  @Output() sendMessage = new EventEmitter<string>();
+
+  private artiStore = inject(ArtiStore);
+  private artiControlsService = inject(ArtiControlsService);
 
   fb: FormBuilder = inject(FormBuilder);
   form: FormGroup<any> = this.fb.group({
@@ -31,15 +35,19 @@ export class TextBoxComponent implements OnInit {
     promptControl?.updateValueAndValidity();
   }
 
-  handleSubmit() {
-    if(this.form?.invalid) return;
-    const prompt = this.form?.value.prompt;
-    this.sendMessage.emit(prompt);
-    this.form?.reset();
-  }
-
   send(mode: ArtiRequest['mode']) {
-
+    if(this.form?.invalid) return;
+    let userInput = '';
+    if (mode === 'advanced') {
+      userInput = this.form?.value.prompt;
+    }
+    this.artiStore.load({
+      code: this.artiControlsService.requestCodeCtrl.value,
+      mode,
+      language: this.artiControlsService.requestLanguageCtrl.value,
+      userInput
+    });
+    this.form?.reset();
   }
 }
 
